@@ -8,6 +8,7 @@ import Header from "../components/header";
 type LocationData = {
 	city: string;
 	country: string;
+	countryCode: string;
 	lat: number;
 	lng: number;
 	timestamp: number;
@@ -45,11 +46,12 @@ export default function Home() {
 
 				// Send to OpenCage
 				const res: any = await fetch(`/api/geocode?lat=${latitude}&lng=${longitude}`);
-				console.log(res);
+				const data = await res.json();
 
 				const newLocation: LocationData = {
-					city: (res.city || res.town || res.village || "Unknown").split(" ")[0],
-					country: res.country,
+					city: (data.city || data.town || data.village || "Unknown").split(" ")[0],
+					country: data.country,
+					countryCode: data.country_code,
 					lat: latitude,
 					lng: longitude,
 					timestamp: now,
@@ -71,7 +73,10 @@ export default function Home() {
 	// 
 	return (
 		<>
-			<Header/>
+			<Header />
+			<div>
+				{JSON.stringify(location)}
+			</div>
 		</>
 	);
 }

@@ -25,7 +25,23 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
 
-    return NextResponse.json(data.result?.[0]?.components);
+    // Check if results exist and have data
+    if (!data.results || data.results.length === 0) {
+      return NextResponse.json(
+        { error: "No location data found" },
+        { status: 404 }
+      );
+    }
+
+    // Check if components exist
+    if (!data.results[0].components) {
+      return NextResponse.json(
+        { error: "No components data found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(data.results[0].components);
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json(
