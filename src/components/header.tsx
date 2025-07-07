@@ -6,13 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 // Types
-type City = {
-	name: string;
-	city: string;
+type HeaderProps = {
+	location?: any;
 }
 
 // 
-export default function Header() {
+export default function Header({ location }: HeaderProps) {
 	const url = usePathname();
 
 	// 
@@ -30,7 +29,8 @@ export default function Header() {
 					<ul className="flex flex-row justify-center items-center 2xl:gap-x-8 md:gap-x-6 text-primary font-bold">
 						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/for-buisness' && 'text-secondary'}`}><Link href='/for-buisness'>For Buisness</Link></li>
 						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/about-us' && 'text-secondary'}`}><Link href='/about-us'>About us</Link></li>
-						<select className="cursor-pointer text-center text-secondary w-22" name="cities">
+						<select className="cursor-pointer text-center text-secondary w-auto" name="cities">
+							<option value="">{location && location.city}</option>
 						</select>
 					</ul>
 				</nav>

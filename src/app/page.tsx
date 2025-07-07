@@ -73,9 +73,9 @@ export default function Home() {
 	// 
 	return (
 		<>
-			<Header />
+			<Header location={location} />
 			<div>
-				{JSON.stringify(location)}
+				{location?.country}
 			</div>
 		</>
 	);
