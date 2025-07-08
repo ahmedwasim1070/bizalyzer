@@ -17,7 +17,7 @@ export default function Header({ location }: HeaderProps) {
 	// 
 	return (
 		<>
-			<div id="header" className="sticky top-0 flex flex-row items-center justify-between h-auto 2xl:py-6 md:py-4 2xl:px-6 md:px-6 bg-background backdrop:blur-sm">
+			<div id="header" className="sticky top-0 flex flex-row items-center justify-between h-auto 2xl:py-6 md:py-4 2xl:px-6 md:px-6 bg-background backdrop:blur-sm inset-0">
 
 				{/* Left (logo) */}
 				<div id="logo">
@@ -29,9 +29,6 @@ export default function Header({ location }: HeaderProps) {
 					<ul className="flex flex-row justify-center items-center 2xl:gap-x-8 md:gap-x-6 text-primary font-bold">
 						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/for-buisness' && 'text-secondary'}`}><Link href='/for-buisness'>For Buisness</Link></li>
 						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/about-us' && 'text-secondary'}`}><Link href='/about-us'>About us</Link></li>
-						<select className="cursor-pointer text-center text-secondary w-auto" name="cities">
-							<option value="">{location && location.city}</option>
-						</select>
 					</ul>
 				</nav>
 
