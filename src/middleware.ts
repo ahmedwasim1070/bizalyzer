@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
+export async function middleware() {
   try {
     // Append IP to your API call
     const geoRes = await fetch(`${process.env.IP_GEO_LOCATION}`);
@@ -19,9 +18,9 @@ export async function middleware(req: NextRequest) {
 
     res.cookies.set("state_info", JSON.stringify(location), {
       path: "/",
-      httpOnly: false, // Set to true if you don't want JS access
+      httpOnly: false,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "development",
+      secure: process.env.NODE_ENV !== "development",
     });
 
     return res;
