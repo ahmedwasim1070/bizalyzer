@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function middleware() {
   try {
     // Append IP to your API call
-    const geoRes = await fetch(`${process.env.IP_GEO_LOCATION}`);
+    const geoRes = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IPGEO_KEY}`);
     const geoData = await geoRes.json();
 
     // Construct location object

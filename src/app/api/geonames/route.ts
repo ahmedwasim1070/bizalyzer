@@ -4,19 +4,28 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const countryCode = searchParams.get("countryCode");
 
-  if (!countryCode) {
+  if (!countryCode || countryCode.length !== 2) {
     return NextResponse.json(
       { error: "Country code is required" },
       { status: 400 }
     );
   }
+
+  if (!process.env.GEONAME_USERNAME) {
+    console.error("GEONAME_USERNAME environment variable is not set");
+    return NextResponse.json(
+      { message: "Server configuration error." },
+      { status: 500 }
+    );
+  }
+
   try {
     const response = await fetch(
-        `http://api.geonames.org/searchJSON?country=${countryCode}&featureClass=P&orderby=population&maxRows=100&username=${process.env.GEONAME_USERNAME}`
+      `http://api.geonames.org/searchJSON?country=${countryCode}&featureClass=P&orderby=population&maxRows=100&username=${process.env.GEONAME_USERNAME}`
     );
     if (!response.ok) {
       return NextResponse.json(
-        { error: "Failed to fetch data from GEONAMES api" },
+        { error: "Failed to fetch data from GEONAMES API" },
         { status: response.status }
       );
     }

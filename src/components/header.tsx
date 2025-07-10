@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { ThreeDotLoader } from "./loader";
 
 // Types
 type Location = {
@@ -15,13 +16,14 @@ type Location = {
 }
 type HeaderProps = {
 	location: Location | null;
+	selectedCity?: string;
+	setSelectedCity?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // 
-export default function Header({ location }: HeaderProps) {
+export default function Header({ location, selectedCity, setSelectedCity }: HeaderProps) {
 	// 
 	const url = usePathname();
-	const [selectedCity, setSelectedCity] = useState<string>(location ? location.capital : "Select-city");
 	// 
 	const [listCity, setListCity] = useState<boolean>(false);
 	let [cities, setCities] = useState<string[]>([]);
@@ -30,16 +32,18 @@ export default function Header({ location }: HeaderProps) {
 	const fetchCity = async () => {
 		try {
 			if (!location) {
-				console.error("No country found !");
-				return;
+				throw new Error("No country found !");
 			}
 
 			const response = await fetch(`/api/geonames/?countryCode=${location.countryCode}`);
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
 			const data = await response.json();
 
 			setCities(data);
 		} catch (error) {
-			console.error("Error in geonames api,", error);
+			console.error("Error in cityFetcher api,", error);
 		}
 	}
 
@@ -62,28 +66,23 @@ export default function Header({ location }: HeaderProps) {
 				{/* Right (navbar) */}
 				<nav id="navbar" className="w-auto">
 					<ul className="flex flex-row justify-center items-center 2xl:gap-x-8 md:gap-x-6 text-primary font-bold">
-						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/for-buisness' && 'text-secondary'}`}><Link href='/for-buisness'>For Buisness</Link></li>
-						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/about-us' && 'text-secondary'}`}><Link href='/about-us'>About us</Link></li>
+						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/for-buisness' && 'text-secondary'}`}><Link href='/for-buisness'>For Buisness</Link></li> <li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/about-us' && 'text-secondary'}`}><Link href='/about-us'>About us</Link></li>
 						<div onClick={() => setListCity(!listCity)} className="relative flex flex-row items-end gap-x-1 cursor-pointer">
-							<p className="not-italic text-secondary">{selectedCity}</p>
+							<p className="not-italic text-secondary">{selectedCity ? selectedCity : "Select-city"}</p>
 							{!listCity ?
 								<ChevronDown className="w-5 h-5 text-secondary" />
 								:
 								<ChevronUp className="w-5 h-5 text-secondary" />
 							}
-							<div className={`absolute flex flex-col justify-start items-center gap-y-1 w-full min-w-20 ${listCity ? 'max-h-[70vh] border-x border-b bg-background py-2' : 'h-0 bg-transparent'} top-6 -z-10 rounded-b-xl border-secondary/50 overflow-x-hidden overflow-y-auto duration-300`}>
+							<div className={`absolute flex flex-col justify-start items-center gap-y-1 w-full min-w-20 ${listCity ? 'max-h-[70vh] border-x border-b bg-background py-2' : 'h-0 bg-transparent'} top-6 -z-10 rounded-b-xl border-secondary/20 overflow-x-hidden overflow-y-auto duration-300`}>
 								{/* Loader */}
 								{listCity && cities.length === 0 &&
-									<div className="flex items-center justify-center h-10 space-x-1">
-										<span className="block w-[1vw] h-[1vw] rounded-full animate-bounce [--delay:0s] bg-primary" style={{ animationDelay: '0s' }}></span>
-										<span className="block w-[1vw] h-[1vw] rounded-full animate-bounce [--delay:0.2s] bg-secondary" style={{ animationDelay: '0.2s' }}></span>
-										<span className="block w-[1vw] h-[1vw] rounded-full animate-bounce [--delay:0.4s] bg-primary" style={{ animationDelay: '0.4s' }}></span>
-									</div>
+									< ThreeDotLoader size={'3'} />
 								}
 
 								{/* City list */}
 								{cities.map((cityName, idx) => (
-									<p onClick={() => setSelectedCity(cityName)} className={`w-full px-2 py-1 ${cityName === selectedCity && 'bg-secondary text-white hover:text-white '} hover:text-secondary text-wrap  cursor-pointer`} key={idx}>{cityName}</p>
+									<p onClick={() => setSelectedCity && setSelectedCity(cityName)} className={`w-full px-2 py-1 ${cityName === selectedCity && 'bg-secondary text-white hover:text-white '} hover:text-secondary text-wrap  cursor-pointer`} key={idx}>{cityName}</p>
 								))}
 							</div>
 						</div>
