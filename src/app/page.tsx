@@ -2,14 +2,16 @@
 
 // Imports
 import { useEffect, useState } from "react";
+// Components
 import Header from "../components/header";
+import Hero from "../components/hero";
 
 // Types
 type Location = {
 	capital: string;
 	country: string;
 	countryCode: string;
-};
+}
 type AbsoluteLocation = {
 	city: string;
 	country: string;
@@ -18,7 +20,6 @@ type AbsoluteLocation = {
 
 export default function Home() {
 	const [absoluteLocation, setAbsoluteLocation] = useState<AbsoluteLocation | null>(null);
-	const [locationDenied, setLocationDenied] = useState<boolean>(false);
 	const [location, setLocation] = useState<Location | null>(null);
 	const [selectedCity, setSelectedCity] = useState<string>("Select-city");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -93,14 +94,12 @@ export default function Home() {
 						setSelectedCity(newAbsoluteLocation.city);
 					} catch (error) {
 						console.error("Error in absoluteLocation api:", error);
-						setLocationDenied(true);
 					} finally {
 						setIsLoading(false);
 					}
 				},
 				(error) => {
 					console.error("Geolocation error:", error);
-					setLocationDenied(true);
 					setIsLoading(false);
 				},
 				{
@@ -110,7 +109,7 @@ export default function Home() {
 				}
 			);
 		}
-	}, []); // Empty dependency array to run only once
+	}, []);
 
 	return (
 		<>
@@ -120,7 +119,8 @@ export default function Home() {
 				setSelectedCity={setSelectedCity}
 			/>
 
-			{/* Optional: Display location status */}
+			<Hero selectedCity={selectedCity} selectedCountryCode={location?.countryCode} />
+
 			{isLoading && (
 				<div className="p-4 text-center">
 					<p>Getting your location...</p>

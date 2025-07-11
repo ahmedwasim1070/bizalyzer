@@ -21,7 +21,7 @@ type HeaderProps = {
 }
 
 // 
-export default function Header({ location, selectedCity, setSelectedCity }: HeaderProps) {
+function Header({ location, selectedCity, setSelectedCity }: HeaderProps) {
 	// 
 	const url = usePathname();
 	// 
@@ -93,3 +93,5 @@ export default function Header({ location, selectedCity, setSelectedCity }: Head
 		</>
 	);
 }
+
+export default Header;

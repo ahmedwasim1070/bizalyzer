@@ -1,4 +1,4 @@
-export default function Geoprompt() {
+function Geoprompt() {
     return (
         <>
             <section className="w-[100vw] h-[100vh] bg-background fixed flex justify-center items-center z-50">
@@ -19,3 +19,5 @@ export default function Geoprompt() {
         </>
     );
 }
+
+export default Geoprompt;
