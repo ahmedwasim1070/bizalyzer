@@ -12,18 +12,7 @@ const authOptions: NextAuthOptions = {
     Google({
       clientId: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      authorization: {
-        params: {
-          scope: [
-            'openid',
-            'email',
-            'profile',
-            'https://www.googleapis.com/auth/business.manage'
-          ].join(' '),
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
+      // Remove authorization block for basic testing
     }),
   ],
   callbacks: {
@@ -34,21 +23,7 @@ const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, account }) {
-      // Store the access token and refresh token
-      if (account) {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
-        token.accessTokenExpires = account.expires_at;
-        token.scope = account.scope;
-      }
-      return token;
-    },
     async session({ session, token }) {
-      // Pass the access token to the session
-      session.accessToken = token.accessToken;
-      session.refreshToken = token.refreshToken;
-      session.scope = token.scope;
       console.log("Session callback:", { session, token });
       return session;
     },
