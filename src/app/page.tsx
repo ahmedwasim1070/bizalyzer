@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 // Components
 import Header from "../components/header";
 import Hero from "../components/hero";
+import { parse } from "path";
 
 // Types
 type Location = {
@@ -30,22 +31,21 @@ export default function Home() {
 			return match ? decodeURIComponent(match[2]) : null;
 		};
 
-		// Initialize from cookie first
 		const rawLocation = getCookie('state_info');
+		let parsedLocation: Location | null = null;
 		if (rawLocation) {
 			try {
-				const parsed = JSON.parse(rawLocation) as Location;
-				setLocation(parsed);
-				// Fixed: Use proper conditional logic
+				parsedLocation = JSON.parse(rawLocation) as Location;
+				setLocation(parsedLocation);
+
 				if (selectedCity === "Select-city") {
-					setSelectedCity(parsed.capital);
+					setSelectedCity(parsedLocation.capital);
 				}
 			} catch (e) {
 				console.error("Invalid JSON in state_info cookie:", e);
 			}
 		}
 
-		// Initialize absolute location from localStorage
 		let storedAbsoluteLocation: AbsoluteLocation | null = null;
 		try {
 			const stored = localStorage.getItem('absolute_location');
@@ -64,7 +64,10 @@ export default function Home() {
 			if (!storedAbsoluteLocation) return true;
 
 			const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-			const isExpired = Date.now() - storedAbsoluteLocation.timeStamps > twentyFourHours;
+			let isExpired = Date.now() - storedAbsoluteLocation.timeStamps > twentyFourHours;
+			if (parsedLocation?.country.toLowerCase() !== storedAbsoluteLocation?.country.toLowerCase()) {
+				isExpired = true;
+			}
 
 			return isExpired;
 		};
@@ -74,6 +77,7 @@ export default function Home() {
 
 			navigator.geolocation.getCurrentPosition(
 				async (position) => {
+					console.log("called");
 					try {
 						const { latitude, longitude } = position.coords;
 						const response = await fetch(`/api/opencage/?lat=${latitude}&lng=${longitude}`);
@@ -103,7 +107,7 @@ export default function Home() {
 					setIsLoading(false);
 				},
 				{
-					enableHighAccuracy: true,
+					enableHighAccuracy: false,
 					timeout: 10000,
 					maximumAge: 300000 // 5 minutes
 				}
