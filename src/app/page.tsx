@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 // Components
 import Header from "../components/header";
 import Hero from "../components/hero";
-import { parse } from "path";
 
 // Types
 type Location = {
