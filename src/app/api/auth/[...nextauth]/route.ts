@@ -1,5 +1,5 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import Google from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
@@ -9,10 +9,15 @@ const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   providers: [
-    Google({
+    GoogleProvider({
       clientId: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      // Remove authorization block for basic testing
+      authorization: {
+        params: {
+          scope:
+            "openid email profile https://www.googleapis.com/auth/business.manage",
+        },
+      },
     }),
   ],
   callbacks: {
@@ -23,12 +28,44 @@ const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async session({ session, token }) {
-      console.log("Session callback:", { session, token });
+
+    async jwt({ token, account }) {
+      if (account) {
+        // First time login: store access token
+        token.accessToken = account.access_token;
+
+        // 🔥 TEST: Call Google Business Profile API
+        try {
+          const res = await fetch(
+            `https://mybusinessbusinessinformation.googleapis.com/v1/accounts/${account.providerAccountId}/locations`,
+            {
+              headers: {
+                Authorization: `Bearer ${account.access_token}`,
+              },
+            }
+          );
+
+          if (!res.ok) {
+            const text = await res.text(); // log raw HTML response
+            console.error("❌ Business API Error Response (non-JSON):", text);
+          } else {
+            const data = await res.json();
+            console.log("✅ Business Profile API Response:", data);
+          }
+        } catch (err) {
+          console.error("❌ Error fetching business profile:", err);
+        }
+      }
+
+      return token;
+    },
+
+    async session({ session, token }: any) {
+      session.accessToken = token.accessToken;
       return session;
     },
   },
-  // Add debug for testing
+
   debug: true,
   logger: {
     error(code, metadata) {
