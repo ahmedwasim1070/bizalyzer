@@ -2,6 +2,7 @@
 import { Typewriter } from "react-simple-typewriter";
 import Image from "next/image";
 import { Search } from "lucide-react";
+import Link from "next/link";
 
 // Types
 type HeroProps = {
@@ -13,8 +14,8 @@ type HeroProps = {
 function Hero({ selectedCity, selectedCountryCode }: HeroProps) {
     return (
         <>
-            <main className="min-w-screen bg-gradient-to-b from-background to-white flex items-center justify-center border-b border-primary/10">
-                <div className="min-w-1/4 text-center space-y-2 my-30">
+            <main className="min-w-screen bg-gradient-to-b from-background to-white flex items-center justify-center">
+                <div className="min-w-1/4 text-center space-y-2 my-20">
                     <Image src='/main-logo.svg' className="mx-auto my-4" alt="bizelevn Logo" width={200} height={100} priority />
                     <p className="text-primary font-semibold text-xl">
                         Ranking
@@ -38,11 +39,33 @@ function Hero({ selectedCity, selectedCountryCode }: HeroProps) {
                     </div>
                     {/*  */}
 
-                    <p className="text-secondary my-2 space-x-1"> 
+
+                    <p className="text-secondary my-4 space-x-1">
                         <span>Searching in</span>
                         <strong className="text-primary">{selectedCity}</strong>,
                         <strong> {selectedCountryCode}</strong>
                     </p>
+
+                    <nav>
+                        <ul className="list-none inline-flex space-x-3 text-primary">
+                            {/*  */}
+                            <li>
+                                <Link className="text-primary decoration-secondary underline hover:text-secondary hover:decoration-primary" href='/about-us'>About-us</Link>
+                            </li>
+                            {/*  */}
+                            <i className="not-italic text-secondary">|</i>
+                            {/*  */}
+                            <li>
+                                <Link className="underline hover:text-secondary decoration-secondary hover:decoration-primary" href='/privacy-policy'>Privacy-policy</Link>
+                            </li>
+                            <i className="not-italic text-secondary">|</i>
+                            {/*  */}
+                            <li>
+                                <Link className="underline hover:text-secondary decoration-secondary hover:decoration-primary" href='/terms-of-use'>Terms-of-use</Link>
+                            </li>
+                            {/*  */}
+                        </ul>
+                    </nav>
                 </div>
             </main>
         </>

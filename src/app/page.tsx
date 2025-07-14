@@ -107,7 +107,7 @@ export default function Home() {
 				},
 				{
 					enableHighAccuracy: false,
-					timeout: 10000,
+					timeout: 50000,
 					maximumAge: 300000 // 5 minutes
 				}
 			);

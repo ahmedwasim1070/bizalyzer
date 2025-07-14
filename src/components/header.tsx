@@ -66,7 +66,8 @@ function Header({ location, selectedCity, setSelectedCity }: HeaderProps) {
 				{/* Right (navbar) */}
 				<nav id="navbar" className="w-auto">
 					<ul className="flex flex-row justify-center items-center 2xl:gap-x-8 md:gap-x-6 text-primary font-bold">
-						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/for-buisness' && 'text-secondary'}`}><Link href='/for-buisness'>For Buisness</Link></li> <li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/about-us' && 'text-secondary'}`}><Link href='/about-us'>About us</Link></li>
+						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/top/country/profiles' && 'text-secondary'}`}><Link href='/top/world/profiles'>Top Profiles <i className="text-[10px] absolute -right-5 -top-2 text-secondary not-italic">world</i></Link></li>
+						<li className={`relative cursor-pointer hover:text-secondary duration-100 ${url === '/top/country/profiles' && 'text-secondary'}`}><Link href='/top/country/profiles'>Top Profiles <i className="text-[10px] absolute -right-5 -top-2 text-secondary not-italic">country</i></Link></li>
 						<div onClick={() => setListCity(!listCity)} className="relative flex flex-row items-end gap-x-1 cursor-pointer">
 							<p className="not-italic text-secondary">{selectedCity ? selectedCity : "Select-city"}</p>
 							{!listCity ?
@@ -88,6 +89,7 @@ function Header({ location, selectedCity, setSelectedCity }: HeaderProps) {
 						</div>
 					</ul>
 				</nav>
+				{/*  */}
 
 			</div>
 		</>
