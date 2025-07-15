@@ -2,14 +2,7 @@
 
 // Imports
 import { createContext, ReactNode, useContext, useState } from "react";
-
-// Types
-type LocationDataContext = {
-    country: string;
-    countryCode: string;
-    capital: string;
-    liveCity: string;
-};
+import { LocationDataContext } from "@/middleware";
 
 // Interfaces
 interface LocationContextType {
@@ -37,7 +30,7 @@ export function LocationProvider({ children, locationData }: LocationProviderPro
 }
 
 // Location Fetcher hook
-export const useLocation = (): LocationContextType => {
+export const getUserLocation = (): LocationContextType => {
     const context = useContext(LocationContext);
     if (context === undefined) {
         throw new Error('userLocation must be used with a locationProvider');
@@ -45,4 +38,4 @@ export const useLocation = (): LocationContextType => {
     return context;
 }
 
-export type { LocationDataContext, LocationContextType };
+export type { LocationContextType };
