@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 };
 
 // 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
-	const cookieStore = cookies();
+export default async function  RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+	const cookieStore = await cookies();
 	const rawCookie = cookieStore.get("user_location")?.value;
 
 	let locationData = null;

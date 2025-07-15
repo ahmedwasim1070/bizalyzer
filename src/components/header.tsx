@@ -63,7 +63,7 @@ function Header() {
 
     return (
         <>
-            <header id="header" role="banner" className="bg-background min-w-screen flex items-center justify-between px-6 py-6">
+            <header id="header" role="banner" className="bg-background min-w-screen flex items-center justify-between 2xl:px-6 lg:px-4 py-6">
 
                 {/*  */}
                 <div id="logo" className="shrink-0">
@@ -90,7 +90,7 @@ function Header() {
                     ))}
                     <li>
                         <div
-                            className="relative flex flex-row items-end gap-x-1 cursor-pointer group"
+                            className="relative flex flex-row gap-x-1 cursor-pointer group"
                             onClick={() => setListCity(!listCity)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
@@ -98,7 +98,12 @@ function Header() {
                                     setListCity(!listCity);
                                 }
                             }}
-                            role="button" tabIndex={0} aria-expanded={listCity} aria-haspopup="listbox" aria-label={`Current location: ${userLocation?.selectedCity}`}>
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={listCity}
+                            aria-haspopup="listbox"
+                            aria-label={`Current location: ${userLocation?.selectedCity}`}
+                        >
                             <span className="text-secondary hover:text-primary transition-colors">
                                 {userLocation?.selectedCity || userLocation?.capital}
                             </span>
@@ -107,19 +112,19 @@ function Header() {
                             ) : (
                                 <ChevronUp className="w-5 h-5 text-secondary group-hover:text-primary transition-colors" />
                             )}
-                            <div className={`absolute inset-0 flex flex-col gap-y-1 min-w-full w-full ${listCity ? 'max-h-[70vh] border-x border-b bg-background py-2 shadow-lg' : 'h-0 bg-transparent'} top-6 -z-10 rounded-b-xl border-secondary/20 overflow-x-hidden overflow-y-auto duration-300 transition-all`} role="listbox" aria-label="Select city">
+                            <div className={`absolute flex flex-col gap-y-1 min-w-20 ${listCity ? 'h-20 max-h-[70vh] border-x border-b bg-background py-2 shadow-lg' : 'h-0 bg-transparent'} right-0 top-6 z-10 rounded-b-xl border-secondary/20 overflow-x-hidden overflow-y-auto duration-300 transition-all`} role="listbox" aria-label="Select city">
                                 {isFetchingCity &&
                                     <div className="flex items-center justify-center h-10 space-x-1">
                                         <span
-                                            className={`block w-8 h-8 rounded-full animate-bounce bg-primary`}
+                                            className={`block w-3 h-3 rounded-full animate-bounce bg-primary`}
                                             style={{ animationDelay: '0s' }}
                                         />
                                         <span
-                                            className={`block w-8 h-8 rounded-full animate-bounce bg-secondary`}
+                                            className={`block w-3 h-3 rounded-full animate-bounce bg-secondary`}
                                             style={{ animationDelay: '0.2s' }}
                                         />
                                         <span
-                                            className={`block w-8 h-8 rounded-full animate-bounce bg-primary`}
+                                            className={`block w-3 h-3 rounded-full animate-bounce bg-primary`}
                                             style={{ animationDelay: '0.4s' }}
                                         />
                                     </div>
@@ -129,7 +134,7 @@ function Header() {
                                         {cityListingError}
                                     </div>
                                 }
-                                {!isFetchingCity && cities.map((city, idx) => (
+                                {!isFetchingCity && !cityListingError && cities.map((city, idx) => (
                                     <button onClick={() => handleCitySelect(city)} key={idx} role="option" aria-selected={city === userLocation?.selectedCity} tabIndex={listCity ? 0 : -1}>
                                         {city}
                                     </button>
