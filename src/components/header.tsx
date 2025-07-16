@@ -5,12 +5,12 @@ import Link from "next/link"; import Image from "next/image";
 import { getUserLocation } from "@/app/providers/LocationProvider";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronUp, Locate, LocateIcon, LocationEdit } from "lucide-react";
+import { ChevronDown, ChevronUp, LocationEdit } from "lucide-react";
 
 // 
 function Header() {
     const pathname = usePathname();
-    const { userLocation, setUserLocation, selectedCity, setSelectedCity } = getUserLocation();
+    const { userLocation, selectedCity, setSelectedCity } = getUserLocation();
     const navigationItems = [
         {
             href: '/top/world/profiles',
@@ -26,13 +26,13 @@ function Header() {
     const [isFetchingCity, setIsFetchingCity] = useState<boolean>(false);
     const [cityListingError, setCityListingError] = useState<string | null>(null);
     const [listCity, setListCity] = useState<boolean>(false);
-    const [cities, setCities] = useState<string[]>([]);
+    const [cities, setCities] = useState<string[] | null>(null);
 
     const handleCitySelect = (city: string) => {
         setSelectedCity(city);
     }
     const fetchCity = async () => {
-        if (!userLocation && cities.length > 0) {
+        if (!userLocation && cities) {
             setCityListingError("Error while fetching cities");
             return;
         };
@@ -57,7 +57,7 @@ function Header() {
     }
 
     useEffect(() => {
-        if (listCity && cities.length === 0) {
+        if (listCity && !cities) {
             fetchCity();
         }
     }, [listCity])
@@ -104,7 +104,7 @@ function Header() {
                             aria-haspopup="listbox"
                             aria-label={`Current location: ${selectedCity || userLocation?.defaultCity || userLocation?.capital}`}
                         >
-                            <LocationEdit className="size-5 group-hover:text-primary transition-colors"/>
+                            <LocationEdit className="size-5 group-hover:text-primary transition-colors" />
                             <span className="text-secondary transition-colors">
                                 {selectedCity || userLocation?.defaultCity || userLocation?.capital}
                             </span>
@@ -135,7 +135,7 @@ function Header() {
                                         {cityListingError}
                                     </div>
                                 }
-                                {!isFetchingCity && !cityListingError && cities.map((city, idx) => (
+                                {!isFetchingCity && !cityListingError && cities && cities.map((city, idx) => (
                                     <button className={` cursor-pointer py-1 ${selectedCity === city ? 'bg-secondary text-white' : 'text-primary hover:bg-secondary'}`} onClick={() => handleCitySelect(city)} key={idx} role="option" aria-selected={city === selectedCity} tabIndex={listCity ? 0 : -1}>
                                         {city}
                                     </button>
