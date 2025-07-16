@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { LocationProvider } from "./providers/LocationProvider";
 // Components
 import Header from "@/components/header";
+import LocationSelector from "@/components/locationselector";
 
 // Header
 export const metadata: Metadata = {
@@ -14,13 +15,13 @@ export const metadata: Metadata = {
 };
 
 // 
-export default async function  RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
 	const cookieStore = await cookies();
-	const rawCookie = cookieStore.get("user_location")?.value;
+	const locationRawCookie = cookieStore.get("user_location")?.value;
 
 	let locationData = null;
 	try {
-		locationData = rawCookie ? JSON.parse(rawCookie) : null;
+		locationData = locationRawCookie ? JSON.parse(locationRawCookie) : null;
 	} catch (error) {
 		console.error("Error parsing location cookei", error);
 		locationData = null;
@@ -30,6 +31,7 @@ export default async function  RootLayout({ children }: Readonly<{ children: Rea
 		<html lang="en">
 			<body>
 				<LocationProvider locationData={locationData} >
+					{true && <LocationSelector />}
 					<Header />
 					{children}
 				</LocationProvider>

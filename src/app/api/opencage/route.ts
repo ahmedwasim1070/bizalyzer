@@ -60,22 +60,16 @@ export async function GET(request: Request) {
     }
 
     const data = await response.json();
-
-    // Check if we got results
-
     if (!data.results || data.results.length === 0) {
       return NextResponse.json(
         { message: "No location data found for the provided coordinates." },
         { status: 404 }
       );
     }
-
     const selectedData = data.results[0].components;
 
-    // Return the response using NextResponse.json
-
     return NextResponse.json({
-      city: selectedData?.city || null,
+      city: selectedData?.city.split(" ")[0] || null,
       town: selectedData?.town || null,
       village: selectedData?.village || null,
       country: selectedData?.country || null,

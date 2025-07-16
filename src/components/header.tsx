@@ -5,12 +5,12 @@ import Link from "next/link"; import Image from "next/image";
 import { getUserLocation } from "@/app/providers/LocationProvider";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Locate, LocateIcon, LocationEdit } from "lucide-react";
 
 // 
 function Header() {
     const pathname = usePathname();
-    const { userLocation, setUserLocation } = getUserLocation();
+    const { userLocation, setUserLocation, selectedCity, setSelectedCity } = getUserLocation();
     const navigationItems = [
         {
             href: '/top/world/profiles',
@@ -29,12 +29,13 @@ function Header() {
     const [cities, setCities] = useState<string[]>([]);
 
     const handleCitySelect = (city: string) => {
-        if (!userLocation) return;
-
-        setUserLocation({ ...userLocation, selectedCity: city })
+        setSelectedCity(city);
     }
     const fetchCity = async () => {
-        if (!userLocation && cities.length > 0) return;
+        if (!userLocation && cities.length > 0) {
+            setCityListingError("Error while fetching cities");
+            return;
+        };
 
         setIsFetchingCity(true);
         setCityListingError(null);
@@ -63,8 +64,7 @@ function Header() {
 
     return (
         <>
-            <header id="header" role="banner" className="bg-background min-w-screen flex items-center justify-between 2xl:px-6 lg:px-4 py-6">
-
+            <header id="header" role="banner" className="bg-background min-w-screen flex items-center justify-between 2xl:px-6 lg:px-4 2xl:py-6 md:py-4">
                 {/*  */}
                 <div id="logo" className="shrink-0">
                     <Link href="/" area-label="Bizelevn Buisness Directory Home">
@@ -90,7 +90,7 @@ function Header() {
                     ))}
                     <li>
                         <div
-                            className="relative flex flex-row gap-x-1 cursor-pointer group"
+                            className="relative flex flex-row items-center gap-x-1 cursor-pointer group"
                             onClick={() => setListCity(!listCity)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
@@ -102,17 +102,18 @@ function Header() {
                             tabIndex={0}
                             aria-expanded={listCity}
                             aria-haspopup="listbox"
-                            aria-label={`Current location: ${userLocation?.selectedCity}`}
+                            aria-label={`Current location: ${selectedCity || userLocation?.defaultCity || userLocation?.capital}`}
                         >
-                            <span className="text-secondary hover:text-primary transition-colors">
-                                {userLocation?.selectedCity || userLocation?.capital}
+                            <LocationEdit className="size-5 group-hover:text-primary transition-colors"/>
+                            <span className="text-secondary transition-colors">
+                                {selectedCity || userLocation?.defaultCity || userLocation?.capital}
                             </span>
                             {!listCity ? (
                                 <ChevronDown className="w-5 h-5 text-secondary group-hover:text-primary transition-colors" />
                             ) : (
                                 <ChevronUp className="w-5 h-5 text-secondary group-hover:text-primary transition-colors" />
                             )}
-                            <div className={`absolute flex flex-col gap-y-1 min-w-20 ${listCity ? 'h-20 max-h-[70vh] border-x border-b bg-background py-2 shadow-lg' : 'h-0 bg-transparent'} right-0 top-6 z-10 rounded-b-xl border-secondary/20 overflow-x-hidden overflow-y-auto duration-300 transition-all`} role="listbox" aria-label="Select city">
+                            <div className={`absolute flex flex-col gap-y-1 min-w-full ${listCity ? 'max-h-[70vh] border-x border-b bg-background py-2 shadow-lg' : 'h-0 bg-transparent'} right-0 top-6 z-10 rounded-b-xl border-secondary/20 overflow-x-hidden overflow-y-auto duration-300 transition-all`} role="listbox" aria-label="Select city">
                                 {isFetchingCity &&
                                     <div className="flex items-center justify-center h-10 space-x-1">
                                         <span
@@ -135,7 +136,7 @@ function Header() {
                                     </div>
                                 }
                                 {!isFetchingCity && !cityListingError && cities.map((city, idx) => (
-                                    <button onClick={() => handleCitySelect(city)} key={idx} role="option" aria-selected={city === userLocation?.selectedCity} tabIndex={listCity ? 0 : -1}>
+                                    <button className={` cursor-pointer py-1 ${selectedCity === city ? 'bg-secondary text-white' : 'text-primary hover:bg-secondary'}`} onClick={() => handleCitySelect(city)} key={idx} role="option" aria-selected={city === selectedCity} tabIndex={listCity ? 0 : -1}>
                                         {city}
                                     </button>
                                 ))}
