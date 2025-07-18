@@ -1,4 +1,4 @@
-// Imports
+// // Imports
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -6,8 +6,8 @@ import { NextResponse } from "next/server";
 type LocationDataContext = {
   country: string;
   countryCode: string;
-  capital: string;
-  defaultCity: string | undefined;
+  capital?: string;
+  defaultCity?: string;
 };
 
 //

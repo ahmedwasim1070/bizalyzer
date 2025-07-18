@@ -3,6 +3,8 @@
 // Imports
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { LocationDataContext } from "@/middleware";
+// Components
+import LocationSelector from "@/components/LocationSelector";
 
 // Interfaces
 interface LocationContextType {
@@ -23,10 +25,11 @@ const LocationContext = createContext<LocationContextType | undefined>(undefined
 export function LocationProvider({ children, locationData }: LocationProviderProps) {
     const [userLocation, setUserLocation] = useState<LocationDataContext | null>(locationData || null);
     const [selectedCity, setSelectedCity] = useState<string | null>(null);
+    const [isLocationPrompt, setIsLocationPrompt] = useState<boolean>(false);
 
     const fetchLiveLocation = () => {
         if (!userLocation) return;
-        if (userLocation.liveCity) return;
+        if (userLocation.defaultCity) return;
 
         navigator.geolocation.getCurrentPosition(
             async (position) => {
@@ -37,7 +40,7 @@ export function LocationProvider({ children, locationData }: LocationProviderPro
                     if (!res.ok) throw new Error("Failed to fetch live location");
 
                     const data = await res.json();
-                    setUserLocation({ ...userLocation, liveCity: data.city || data.town || data.village });
+                    setUserLocation({ ...userLocation, defaultCity: data.city || data.town || data.village });
                 } catch (err) {
                     console.error("Live location fetch error:", err);
                 }
@@ -59,15 +62,19 @@ export function LocationProvider({ children, locationData }: LocationProviderPro
 
     useEffect(() => {
         if (userLocation) {
+            setIsLocationPrompt(false);
             const expires = new Date();
             expires.setDate(expires.getDate() + 1);
 
             document.cookie = `user_location=${JSON.stringify(userLocation)}; expires=${expires.toUTCString()}; path=/`;
+        } else {
+            setIsLocationPrompt(true);
         }
     }, [userLocation]);
 
     return (
         <LocationContext.Provider value={{ userLocation, setUserLocation, selectedCity, setSelectedCity }}>
+            {isLocationPrompt && <LocationSelector />}
             {children}
         </LocationContext.Provider>
     );

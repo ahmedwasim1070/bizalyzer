@@ -5,12 +5,11 @@ import { cookies } from "next/headers";
 // Provider
 import { LocationProvider } from "./providers/LocationProvider";
 // Components
-import Header from "@/components/header";
-import LocationSelector from "@/components/locationselector";
+import Header from "@/components/Header";
 
 // Header
 export const metadata: Metadata = {
-	title: "BizElevn",
+	title: "BizRanker",
 	description: "later .....",
 };
 
@@ -31,7 +30,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 		<html lang="en">
 			<body>
 				<LocationProvider locationData={locationData} >
-					{true && <LocationSelector />}
 					<Header />
 					{children}
 				</LocationProvider>
