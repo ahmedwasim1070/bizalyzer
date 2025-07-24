@@ -1,7 +1,6 @@
 "use client";
 
 // Imports
-import { getUserLocation } from "./providers/LocationProvider";
 // Components
 import Hero from "@/components/Hero";
 

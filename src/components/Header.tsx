@@ -3,7 +3,8 @@
 // Imports
 import Link from "next/link";
 import Image from "next/image";
-import { getUserLocation } from "@/app/providers/LocationProvider"; import { usePathname } from "next/navigation";
+import { getUserLocation } from "@/app/providers/LocationProvider";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp, LocationEdit } from "lucide-react";
 
@@ -83,8 +84,8 @@ function Header() {
                 <nav id="navbar" role="navigation" area-label="Main navigation">
                     <ul className="w-auto inline-flex space-x-6 font-semibold text-secondary">
                         {navigationItems.map((item, idx) => (
-                            <li key={idx} className="list-none text-primary">
-                                <Link className={`underline-animation translate-x-full hover:text-secondary duration-100 ${item.isActive && 'text-secondary'}`} href={item.href} title={item.label} aria-current={item.isActive ? 'page' : undefined}>
+                            <li key={idx} className="list-none">
+                                <Link className={`underline-animation translate-x-full hover:text-secondary duration-100 ${item.isActive ? 'text-secondary' : 'text-primary'}`} href={item.href} title={item.label} aria-current={item.isActive ? 'page' : undefined}>
                                     {item.label}
                                 </Link>
                             </li>

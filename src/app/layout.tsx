@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { LocationProvider } from "./providers/LocationProvider";
 // Components
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 // Header
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 				<LocationProvider locationData={locationData} >
 					<Header />
 					{children}
+					<Footer />
 				</LocationProvider>
 			</body>
 		</html>
