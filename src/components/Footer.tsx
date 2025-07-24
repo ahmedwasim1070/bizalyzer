@@ -37,7 +37,7 @@ function Footer() {
 
     return (
         <>
-            <footer id="footer" className="min-w-screen bg-background border-t border-primary/20 py-8">
+            <footer id="footer" className="min-w-screen bg-background border-t border-primary/20 py-12">
                 <div className="flex flex-row items-center justify-evenly">
 
                     {/*  */}
@@ -45,7 +45,7 @@ function Footer() {
                         <nav>
                             <ul className="space-y-2">
                                 {primaryNavigationItems.map((item, idx) => (
-                                    <li key={idx} className="text-secondary text-sm transition-colors decoration-primary hover:text-primary hover:decoration-secondary">
+                                    <li key={idx} className="text-secondary 2xl:text-md lg:text-sm transition-colors decoration-primary hover:text-primary hover:decoration-secondary">
                                         <Link href={item.href} className="underline">{item.label}</Link>
                                     </li>
                                 ))}
@@ -55,7 +55,15 @@ function Footer() {
 
                     {/*  */}
                     <section className="space-y-2 px-4">
-                        <Image src='/main-logo.svg' width={150} height={50} alt="Bizraker - Buisness Directory and Ranking Platform logo" />
+                        <Link href="/" area-label="Bizranker Buisness Directory Home">
+                            <Image
+                                src='/main-logo.svg'
+                                alt="BizRanker - Business Directory and Ranking Platform Logo"
+                                width={150}
+                                height={50}
+                                className="hover:opacity-80 transition-opacity"
+                            />
+                        </Link>
                         <h6 className="text-primary">Ranking Buisnesses</h6>
                     </section>
 
@@ -64,7 +72,7 @@ function Footer() {
                         <nav>
                             <ul className="space-y-2 text-right">
                                 {secondaryNavigationItems.map((item, idx) => (
-                                    <li key={idx} className={`text-sm transition-colors decoration-primary hover:text-primary hover:decoration-secondary ${item.isActive ? 'text-primary' : 'text-secondary'}`}>
+                                    <li key={idx} className={`2xl:text-md lg:text-sm transition-colors decoration-primary hover:text-primary hover:decoration-secondary ${item.isActive ? 'text-primary' : 'text-secondary'}`}>
                                         <Link href={item.href} className="underline">{item.label}</Link>
                                     </li>
                                 ))}

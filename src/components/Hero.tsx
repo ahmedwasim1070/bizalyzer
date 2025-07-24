@@ -66,6 +66,10 @@ function Hero() {
                             </ul>
                         </nav>
 
+                        <button className="border border-primary text-primary rounded-xl px-4 py-2 my-3 cursor-pointer hover:bg-secondary transition-colors">
+                            <p>Add your Buisness.</p>
+                        </button>
+
                     </section>
                 </article>
             </main>
