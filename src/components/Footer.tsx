@@ -37,8 +37,8 @@ function Footer() {
 
     return (
         <>
-            <footer id="footer" className="min-w-screen bg-background border-t border-primary/20 py-12">
-                <div className="flex flex-row items-center justify-evenly">
+            <footer id="footer" className="min-w-screen bg-background border-t border-primary/20 py-14">
+                <div className="flex md:flex-row xxs:flex-col md:gap-y-0 xxs:gap-y-14 items-center justify-around">
 
                     {/*  */}
                     <section>
@@ -54,23 +54,23 @@ function Footer() {
                     </section>
 
                     {/*  */}
-                    <section className="space-y-2 px-4">
+                    <section className="space-y-2 flex flex-col items-center">
                         <Link href="/" area-label="Bizranker Buisness Directory Home">
                             <Image
                                 src='/main-logo.svg'
                                 alt="BizRanker - Business Directory and Ranking Platform Logo"
-                                width={150}
-                                height={50}
+                                width={170}
+                                height={70}
                                 className="hover:opacity-80 transition-opacity"
                             />
                         </Link>
-                        <h6 className="text-primary">Ranking Buisnesses</h6>
+                        <h6 className="text-primary text-lg ">Ranking Buisnesses</h6>
                     </section>
 
                     {/*  */}
                     <section>
                         <nav>
-                            <ul className="space-y-2 text-right">
+                            <ul className="space-y-2 md:text-right xxs:text-left">
                                 {secondaryNavigationItems.map((item, idx) => (
                                     <li key={idx} className={`2xl:text-md lg:text-sm transition-colors decoration-primary hover:text-primary hover:decoration-secondary ${item.isActive ? 'text-primary' : 'text-secondary'}`}>
                                         <Link href={item.href} className="underline">{item.label}</Link>

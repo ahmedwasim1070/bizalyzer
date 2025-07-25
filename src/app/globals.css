@@ -28,7 +28,7 @@
   --color-background: #efeeea;
   /* Custom Screens */
   --breakpoint-xs: 24rem;
-  --breakpoint-xxs: 16rem;
+  --breakpoint-xxs: 0rem;
 }
 
 * {
@@ -48,8 +48,8 @@
   inset: 25px 0 0 0;
   transform: scale(0);
   transform-origin: center;
-  transition: transform .5s ease;
+  transition: transform 0.5s ease;
 }
-.underline-animation:hover::after{
+.underline-animation:hover::after {
   transform: scaleX(1);
 }

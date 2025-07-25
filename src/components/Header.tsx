@@ -6,7 +6,7 @@ import Image from "next/image";
 import { getUserLocation } from "@/app/providers/LocationProvider";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronUp, LocationEdit } from "lucide-react";
+import { ChevronDown, ChevronUp, LocationEdit, AlignJustify } from "lucide-react";
 
 // 
 function Header() {
@@ -28,6 +28,7 @@ function Header() {
     const [cityListingError, setCityListingError] = useState<string | null>(null);
     const [listCity, setListCity] = useState<boolean>(false);
     const [cities, setCities] = useState<string[] | null>(null);
+    const [expandNav, setExnapadNav] = useState<boolean>(false);
 
     const handleCitySelect = (city: string) => {
         setSelectedCity(city);
@@ -66,25 +67,34 @@ function Header() {
 
     return (
         <>
-            <header id="header" role="banner" className="bg-background min-w-screen flex items-center justify-between 2xl:px-6 lg:px-4 2xl:py-6 md:py-4">
+            <header id="header" role="banner" className={`bg-background min-w-screen md:h-auto ${expandNav ? 'xxs:h-50' : 'xxs:h-22'}  grid items-center justify-between md:grid-flow-col xxs:grid-flex-row grid-row-1 md:px-6 xxs:px-0 py-6 duration-200`}>
                 {/*  */}
-                <div id="logo" className="shrink-0">
-                    <Link href="/" area-label="Bizranker Buisness Directory Home">
-                        <Image
-                            src='/main-logo.svg'
-                            alt="BizRanker - Business Directory and Ranking Platform Logo"
-                            width={150}
-                            height={50}
-                            className="hover:opacity-80 transition-opacity"
-                        />
-                    </Link>
+                <div className="md:min-w-auto xxs:min-w-screen md:px-0 xxs:px-4 flex items-center justify-between">
+                    {/*  */}
+                    <div id="logo" className="shrink-0">
+                        <Link href="/" area-label="Bizranker Buisness Directory Home">
+                            <Image
+                                src='/main-logo.svg'
+                                alt="BizRanker - Business Directory and Ranking Platform Logo"
+                                width={150}
+                                height={50}
+                                className="hover:opacity-80 transition-opacity"
+                            />
+                        </Link>
+                    </div>
+
+                    {/*  */}
+                    <button onClick={() => setExnapadNav(!expandNav)} className="md:hidden xxs:block p-2 bg-primary rounded-xl border border-secondary/50 hover:bg-transparent transition-colors cursor-pointer">
+                        <AlignJustify className="w-6 h-6 text-secondary" />
+                    </button>
+
                 </div>
 
                 {/*  */}
-                <nav id="navbar" role="navigation" area-label="Main navigation">
-                    <ul className="w-auto inline-flex space-x-6 font-semibold text-secondary">
+                <nav id="navbar" role="navigation" area-label="Main navigation" className={`md:block ${expandNav ? "xxs:block" : "xxs:hidden"}`}>
+                    <ul className="w-auto flex md:flex-row xxs:flex-col space-x-6 md:space-y-0 xxs:space-y-4 md:py-0 xxs:py-4 font-semibold text-secondary">
                         {navigationItems.map((item, idx) => (
-                            <li key={idx} className="list-none">
+                            <li key={idx} className="list-none text-center">
                                 <Link className={`underline-animation translate-x-full hover:text-secondary duration-100 ${item.isActive ? 'text-secondary' : 'text-primary'}`} href={item.href} title={item.label} aria-current={item.isActive ? 'page' : undefined}>
                                     {item.label}
                                 </Link>
@@ -92,7 +102,7 @@ function Header() {
                         ))}
                         <li>
                             <div
-                                className="relative flex flex-row items-center gap-x-1 cursor-pointer group"
+                                className="relative flex flex-row items-center justify-center gap-x-1 cursor-pointer group"
                                 onClick={() => setListCity(!listCity)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
