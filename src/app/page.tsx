@@ -3,6 +3,7 @@
 // Imports
 // Components
 import Hero from "@/components/Hero";
+import TypeCorosel from "@/components/TypeCorosel";
 
 // 
 function Home() {
@@ -11,6 +12,7 @@ function Home() {
 		<>
 			<section>
 				<Hero />
+				<TypeCorosel />
 			</section>
 		</>
 	)
