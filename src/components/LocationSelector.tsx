@@ -30,7 +30,7 @@ function LocationSelector() {
 
   const fetchCountries = async () => {
     try {
-      const res = await fetch('/data/countries.json')
+      const res = await fetch('/data/countries.json');
       if (!res.ok) {
         throw new Error("Failed to fetch countries");
       }

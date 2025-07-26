@@ -26,7 +26,7 @@ function Hero() {
     // 
     return (
         <>
-            <main className="min-w-screen py-22 bg-gradient-to-b from-background to-white flex items-center justify-center text-center">
+            <main className="min-w-screen pt-16 pb-4 bg-gradient-to-b from-background to-white flex items-center justify-center text-center">
                 <article className="md:w-1/2 xxs:1/1 flex flex-col items-center justify-center gap-y-6">
                     <header className="w-full flex flex-col items-center justify-center gap-y-4">
                         <h1>
